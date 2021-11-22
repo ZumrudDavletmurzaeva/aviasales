@@ -2,32 +2,71 @@
 
 import { combineReducers } from 'redux';
 
-const sort = (state = 'cheapest', action) => {
+const sort = (state = 'SORT_CHEAPEST_FIRST', action) => {
   switch (action.type) {
-    case 'SORT__CHEAPEST':
-      return 'cheapest';
-
-    case 'SORT__FASTEST':
-      return 'fastest';
-
+    case 'SORT':
+      return  action.order;
     default:
       return state;
   }
 };
 
 
-const filter = (
-  state = {
-    checkedList: [],
-    checkAll: true,
-  },
-  action
-) => {
+const allFilters = (isChecked) => {
+  if (isChecked) {
+    return [-1, 0, 1, 2, 3];
+  }
+
+  return [];
+};
+
+const initialTransfers = allFilters(true);
+
+const setAllChecked = (transfers) => {
+  return (
+    transfers.includes(0) && transfers.includes(1) && transfers.includes(2) && transfers.includes(3)
+  );
+};
+
+const controlAllCheckbox = (transfers) => {
+  if (setAllChecked(transfers)) {
+    return allFilters(true);
+  }
+
+  return removeFilters(transfers, -1);
+};
+
+const removeFilters = (transfers, transfer) => {
+  const index = transfers.indexOf(transfer);
+  if (index > -1) {
+    return [...transfers.slice(0, index), ...transfers.slice(index + 1)];
+  }
+
+  return transfers;
+};
+
+const changeFilters = (transfers, transfer) => {
+  if (transfers.includes(transfer)) {
+    return removeFilters(transfers, transfer);
+  }
+
+  return [...transfers, transfer];
+};
+
+ const transfers = (state = initialTransfers, action) => {
   switch (action.type) {
-    case 'CHECKED__LIST':
-      return { ...state, checkedList: action.list };
-    case 'CHECKED__ALL':
-      return { ...state, checkAll: action.checked };
+    case 'TRANSFERS':
+      switch (action.transfers) {
+        case -1:
+          return allFilters(!state.includes(-1));
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+          return controlAllCheckbox(changeFilters(state, action.transfers));
+        default:
+          return state;
+      }
     default:
       return state;
   }
@@ -66,7 +105,7 @@ const progress = (state = 0, action) => {
   }
 };
 
-const data = (state = [], action) => {
+const tickets = (state = [], action) => {
   switch (action.type) {
     case 'SET__DATA':
       return [...state, ...action.tickets];
@@ -79,12 +118,13 @@ const data = (state = [], action) => {
 
 
 const reducer = combineReducers({
- data,
+  tickets,
   sort,
-  filter,
+  transfers,
   error,
   isLoading,
-  progress
+  progress,
+
 });
 
 export default reducer;

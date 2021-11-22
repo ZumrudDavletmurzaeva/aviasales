@@ -1,5 +1,5 @@
 /* eslint-disable func-names */
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect} from 'react';
 import PropTypes from 'prop-types';
 import 'antd/es/progress/style/index.css';
 import { Progress, Spin } from 'antd';
@@ -13,35 +13,10 @@ import Sort from '../sort';
 import * as actions from '../../actions';
 import logo from './Logo.png';
 
-const allFilters = ['Без пересадок', '1 пересадка', '2 пересадки', '3 пересадки'];
 
-const defaultFilters = ['Без пересадок', '1 пересадка', '2 пересадки', '3 пересадки'];
 
-const withAllFilters = (data, checkedList, filters) => (checkboxNumber) =>
-  !checkedList.includes(filters[checkboxNumber])
-    ? []
-    : data.filter((ticket) => {
-        const stopsCount = ticket.segments[0].stops.length;
-        return stopsCount === checkboxNumber;
-      });
-
-const App = function ({ isLoading, data, sort, filter, DataFlight, progress }) {
-  const { checkedList } = filter;
-
-  const withOneFilter = withAllFilters(data, checkedList, allFilters);
-
-  const filteredOptions = useMemo(
-    () => allFilters.reduce((acc, filterName, checkboxNumber) => [...acc, ...withOneFilter(checkboxNumber)], []),
-    [withOneFilter]
-  );
-
-  const sortedOptions = useMemo(
-    () =>
-      sort === 'fastest'
-        ? filteredOptions.sort((prev, next) => (prev.segments[0].duration > next.segments[0].duration ? 1 : -1))
-        : filteredOptions.sort((prev, next) => (prev.price > next.price ? 1 : -1)),
-    [filteredOptions, sort]
-  );
+const App = function ({ isLoading, DataFlight, progress }) {
+  
 
   useEffect(() => {
     DataFlight();
@@ -62,12 +37,11 @@ const App = function ({ isLoading, data, sort, filter, DataFlight, progress }) {
       </header>
 
       <main className="content">
-        <Filter filters={{ allFilters, defaultFilters }} />
+        <Filter />
         <section className="ticket-list">
           <Sort />
-
           <Spin spinning={isLoading} size="large">
-            <ul className="ticket-list">{isLoading ? null : <ItemList data={sortedOptions} />}</ul>
+            <ul className="ticket-list">{isLoading ? null : <ItemList />}</ul>
           </Spin>
         </section>
       </main>
@@ -78,9 +52,6 @@ const App = function ({ isLoading, data, sort, filter, DataFlight, progress }) {
 const mapStateToProps = (state) => ({
   searchId: state.searchId,
   isLoading: state.isLoading,
-  data: state.data,
-  filter: state.filter,
-  sort: state.sort,
   progress: state.progress,
 });
 
@@ -95,11 +66,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(App);
 
 App.propTypes = {
   isLoading: PropTypes.bool.isRequired,
-  data: PropTypes.arrayOf(PropTypes.object).isRequired,
-  filter: PropTypes.shape({
-    checkedList: PropTypes.arrayOf(PropTypes.string),
-  }).isRequired,
   DataFlight: PropTypes.func.isRequired,
-  sort: PropTypes.string.isRequired,
   progress: PropTypes.number.isRequired,
 };

@@ -1,13 +1,21 @@
 
 import { getSearchId, getData } from './services/aviasalesApi';
+export const sortCheap = () => ({type: 'SORT',
+  order: 'SORT_CHEAPEST_FIRST'});
 
-export const sortCheapest = () => ({ type: 'SORT__CHEAPEST' });
+export const sortFast = () => ({ type: 'SORT',
+order: 'SORT_FASTEST_FIRST'});
 
-export const sortFastest = () => ({ type: 'SORT__FASTEST'});
+export const allTransfers = () => ({ type: 'TRANSFERS', transfers: -1});
 
-export const CheckedList = (list) => ({ type: 'CHECKED__LIST', list });
 
-export const CheckedAll = (checked) => ({ type: 'CHECKED__ALL', checked });
+export const noneTransfers = () => ({type: 'TRANSFERS', transfers: 0});
+
+export const oneTransfer = () =>({type: 'TRANSFERS', transfers: 1})
+
+export const twoTransfers = ()=> ({type: 'TRANSFERS', transfers: 2})
+
+export const threeTransfers = () =>({type: 'TRANSFERS', transfers: 3})
 
 export const Error = (error) => ({ type: 'SET__ERROR', error });
 
@@ -15,6 +23,7 @@ export const Loading = (isLoading) => ({ type: 'SET__LOADING', isLoading });
 
 export const Progress = (progress) => ({ type: 'SET__PROGRESS', progress });
 
+export const setData = (tickets) => ({ type: 'SET__DATA', tickets });
 
 
 export const DataFlight = () => async (dispatch) => {
@@ -32,7 +41,7 @@ export const DataFlight = () => async (dispatch) => {
    if (stop) {
     dispatch(Progress(100));
    }
-   dispatch({ type: 'SET__DATA', tickets}); 
+   dispatch(setData(tickets)); 
    dispatch(Progress((100)));
   } catch (err) {
     dispatch(Error(err));
@@ -41,4 +50,3 @@ export const DataFlight = () => async (dispatch) => {
     }
   
 };
-

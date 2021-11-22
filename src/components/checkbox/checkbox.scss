@@ -1,0 +1,15 @@
+
+
+.checkbox {
+    font-family: 'Open Sans';
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    text-align: left;
+    padding:  6px 20px 10px 10px;
+
+    &:hover, &:focus {
+	background-color: #F1FCFF;
+	cursor: pointer;
+    }
+}

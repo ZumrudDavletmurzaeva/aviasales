@@ -6,8 +6,8 @@ import { format, addMinutes, parseJSON } from 'date-fns';
 
 import './itemcontent.scss';
 
-const ItemContent = function({ direction }) {
-  const { origin, destination, date, stops, duration } = direction;
+const ItemContent = function({ origin, destination, date, stops, duration  }) {
+ 
 
   const getStopsCountLabel = (length) => {
     if (length === 0) {

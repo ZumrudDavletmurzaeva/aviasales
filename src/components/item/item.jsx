@@ -5,9 +5,9 @@ import PropTypes from 'prop-types';
 import ItemContent from '../ itemcontent';
 import './item.scss';
 
-const Item = function ({ item }) {
-  const { segments, carrier, price } = item;
-  const [to, back] = segments;
+const Item = function ({ segments, carrier, price }) {
+
+
 
   const getPriceLabel = (cost) => `${cost.toString().replace(/(\d)(?=(\d{3})+$)/g, '$1 ')} Р`;
 
@@ -23,8 +23,8 @@ const Item = function ({ item }) {
         </span>
       </div>
       <div className="info">
-        <ItemContent direction={to} />
-        <ItemContent direction={back} />
+        <ItemContent {...segments[0]} />
+        <ItemContent {...segments[1]} />
       </div>
     </div>
   );

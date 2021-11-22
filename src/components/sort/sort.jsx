@@ -9,23 +9,26 @@ import * as actions from '../../actions';
 
 import './sort.scss';
 
-const Sort = function ({ sort, sortCheapest, sortFastest }) {
+const Sort = function ({ sort, sortCheap, sortFast }) {
   const cheapestClassNames = cn({
     sort__btn: true,
-    'sort__btn--focused': sort === 'cheapest',
+    'sort__btn--focused': sort === 'SORT_CHEAPEST_FIRST',
   });
 
   const fastestClassNames = cn({
     sort__btn: true,
-    'sort__btn--focused': sort === 'fastest',
+    'sort__btn--focused': sort === 'SORT_FASTEST_FIRST',
   });
 
+
+
+  
   return (
     <div className="sort">
-      <button type="button" className={cheapestClassNames} onClick={sortCheapest}>
+      <button type="button" className={cheapestClassNames} onClick={sortCheap}>
         Самый дешевый
       </button>
-      <button type="button" className={fastestClassNames} onClick={sortFastest}>
+      <button type="button" className={fastestClassNames} onClick={sortFast}>
         Самый быстрый
       </button>
     </div>
@@ -37,10 +40,10 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => {
-  const { sortCheapest, sortFastest } = bindActionCreators(actions, dispatch);
+  const { sortCheap, sortFast } = bindActionCreators(actions, dispatch);
   return {
-    sortCheapest,
-    sortFastest,
+    sortCheap,
+    sortFast,
   };
 };
 
