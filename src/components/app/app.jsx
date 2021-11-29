@@ -41,7 +41,7 @@ const App = function ({ isLoading, DataFlight, progress }) {
         <section className="ticket-list">
           <Sort />
           <Spin spinning={isLoading} size="large">
-            <ul className="ticket-list">{isLoading ? null : <ItemList />}</ul>
+            <ul className="ticket-list">{<ItemList />  && <ItemList />}</ul>
           </Spin>
         </section>
       </main>
