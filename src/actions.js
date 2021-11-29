@@ -36,17 +36,21 @@ export const DataFlight = () => async (dispatch) => {
     dispatch(Loading(false));
     return;
   }
+  const circle = 30;
+  for (let i = 1; i <= circle; i++) {
   try {
    const { tickets, stop} = await getData(responseId.searchId);
-   if (stop) {
-    dispatch(Progress(100));
-   }
+   if (!stop) {
    dispatch(setData(tickets)); 
-   dispatch(Progress((100)));
+   dispatch(Progress((i*100)/100))
+  }
+else{
+  dispatch(Progress((100)))
+}
   } catch (err) {
     dispatch(Error(err));
   } finally {
    dispatch(Loading(false));
     }
   
-};
+}}

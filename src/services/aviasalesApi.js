@@ -1,19 +1,21 @@
 /* eslint-disable no-useless-concat */
- const getResource = async (url) => {
-  const res = await fetch(url);
+
+ const getResource = async (path) => {
+  const apiBase= 'https://front-test.beta.aviasales.ru';
+  const res = await fetch(`${apiBase}${path}`);
 
   if (!res.ok) {
-    throw new Error(`Could not fetch ${url}` + `, received ${res.status}`);
+    throw new Error(`${res}`);
   }
   return res.json();
 };
+
+
 export const getSearchId = async () => {
-  const fullUrl = `https://front-test.beta.aviasales.ru/search`;
-  return getResource(fullUrl)
+  return getResource(`/search`)
 };
 
+
 export const getData = async (searchId) => {
-  const fullUrl = `https://front-test.beta.aviasales.ru/tickets?searchId=${searchId}`;
-  
-  return getResource(fullUrl)
+  return getResource(`/tickets?searchId=${searchId}`)
 };
